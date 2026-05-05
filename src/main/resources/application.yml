@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: transactions
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: 8080
+
+app:
+  rabbitmq:
+    exchange: transactions.exchange
+    queue: transaction-import
+    routing-key: transaction.import
+    dlq: transaction-import.dlq
