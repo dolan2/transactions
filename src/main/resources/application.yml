@@ -1,6 +1,27 @@
 spring:
   application:
     name: transactions
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY:}
+  data:
+    mongodb:
+      auto-index-creation: false
+    web:
+      pageable:
+        default-page-size: 20
+        max-page-size: 100
+  mongodb:
+    uri: mongodb://${MONGO_USER:root}:${MONGO_PASSWORD:secret}@${MONGO_HOST:localhost}:${MONGO_PORT:27017}/transactions?authSource=admin
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:myuser}
+    password: ${RABBITMQ_PASSWORD:secret}
 
 management:
   endpoints:
@@ -12,7 +33,16 @@ management:
       show-details: always
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+  api-docs:
+    path: /v3/api-docs
 
 app:
   rabbitmq:
@@ -20,3 +50,9 @@ app:
     queue: transaction-import
     routing-key: transaction.import
     dlq: transaction-import.dlq
+  import:
+    upload-dir: ${IMPORT_UPLOAD_DIR:./uploads}
+    batch-size: ${IMPORT_BATCH_SIZE:500}
+  security:
+    api-key: ${API_KEY:dev-api-key-change-me}
+    enabled: ${SECURITY_ENABLED:false}

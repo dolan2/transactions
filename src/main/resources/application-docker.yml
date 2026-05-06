@@ -1,8 +1,0 @@
-spring:
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    username: ${RABBITMQ_USER:myuser}
-    password: ${RABBITMQ_PASSWORD:secret}
-  mongodb:
-    uri: mongodb://${MONGO_USER:root}:${MONGO_PASSWORD:secret}@mongodb:27017/transactions?authSource=admin

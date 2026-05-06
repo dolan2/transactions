@@ -2,9 +2,9 @@ package org.finance.transactions.application.usecase;
 
 import org.finance.transactions.application.dto.StatisticsQuery;
 import org.finance.transactions.application.dto.StatisticsResult;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface GetStatisticsUseCase {
-    List<StatisticsResult> getStatistics(StatisticsQuery query);
+    Page<StatisticsResult> getStatistics(StatisticsQuery query, Pageable pageable);
 }

@@ -1,0 +1,179 @@
+### Variables
+@baseUrl = http://localhost:8080/transactions/v1
+@apiKey = dev-api-key-change-me
+@importId = c68d97fa-da70-44ec-830a-4daf7cbed516
+
+### ─── IMPORTS ────────────────────────────────────────────────────────────────
+
+### Upload CSV file
+# @name uploadCsv
+POST {{baseUrl}}/imports
+X-API-Key: {{apiKey}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="transactions.csv"
+Content-Type: text/plain
+
+iban,date,amount,currency,category,description
+DE89370400440532013000,2024-03-15,100.50,EUR,groceries,Supermarket
+DE89370400440532013000,2024-03-16,-45.00,EUR,transport,Bus ticket
+GB29NWBK60161331926819,2024-03-10,200.00,GBP,transport,Train ticket
+DE89370400440532013000,2024-04-05,75.00,EUR,entertainment,Cinema
+GB29NWBK60161331926819,2024-04-12,-30.00,GBP,groceries,Corner shop
+--boundary--
+
+###
+
+### Get import status (uses importId captured from uploadCsv)
+GET {{baseUrl}}/imports/{{importId}}
+X-API-Key: {{apiKey}}
+
+###
+
+### Get import status – explicit ID
+GET {{baseUrl}}/imports/{{importId}}
+X-API-Key: {{apiKey}}
+
+###
+
+### Retry a failed import
+POST {{baseUrl}}/imports/{{importId}}/retry
+X-API-Key: {{apiKey}}
+
+###
+
+### Retry – explicit ID
+POST {{baseUrl}}/imports/{{importId}}/retry
+X-API-Key: {{apiKey}}
+
+###
+
+### Upload 100 records
+# @name uploadCsv100
+POST {{baseUrl}}/imports
+X-API-Key: {{apiKey}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="transactions-100.csv"
+Content-Type: text/csv
+
+< ./test-data/transactions-100.csv
+--boundary--
+
+###
+
+### Upload 500 records
+# @name uploadCsv500
+POST {{baseUrl}}/imports
+X-API-Key: {{apiKey}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="transactions-500.csv"
+Content-Type: text/csv
+
+< ./test-data/transactions-500.csv
+--boundary--
+
+###
+
+### Upload 10 000 records (performance / stress test)
+# @name uploadCsv10000
+POST {{baseUrl}}/imports
+X-API-Key: {{apiKey}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="transactions-10000.csv"
+Content-Type: text/csv
+
+< ./test-data/transactions-10000.csv
+--boundary--
+
+###
+
+### Upload without API key → 401
+POST {{baseUrl}}/imports
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="test.csv"
+Content-Type: text/plain
+
+iban,date,amount,currency,category,description
+DE89370400440532013000,2024-03-15,100.50,EUR,groceries,Test
+--boundary--
+
+### ─── STATISTICS ─────────────────────────────────────────────────────────────
+
+### All statistics (default page: page=0, size=20)
+GET {{baseUrl}}/statistics
+X-API-Key: {{apiKey}}
+
+###
+
+### Filter by category
+GET {{baseUrl}}/statistics?category=groceries
+X-API-Key: {{apiKey}}
+
+###
+
+### Filter by IBAN
+GET {{baseUrl}}/statistics?iban=DE89370400440532013000
+X-API-Key: {{apiKey}}
+
+###
+
+### Filter by month
+GET {{baseUrl}}/statistics?month=2024-03
+X-API-Key: {{apiKey}}
+
+###
+
+### Filter by category + IBAN combined
+GET {{baseUrl}}/statistics?category=groceries&iban=DE89370400440532013000
+X-API-Key: {{apiKey}}
+
+###
+
+### Filter by IBAN + month combined
+GET {{baseUrl}}/statistics?iban=GB29NWBK60161331926819&month=2024-04
+X-API-Key: {{apiKey}}
+
+###
+
+### Pagination – page 0, size 1
+GET {{baseUrl}}/statistics?page=0&size=1
+X-API-Key: {{apiKey}}
+
+###
+
+### Pagination – page 1, size 1
+GET {{baseUrl}}/statistics?page=1&size=1
+X-API-Key: {{apiKey}}
+
+###
+
+### Pagination – large page size
+GET {{baseUrl}}/statistics?page=0&size=100
+X-API-Key: {{apiKey}}
+
+###
+
+### All filters combined with pagination
+GET {{baseUrl}}/statistics?category=groceries&iban=DE89370400440532013000&month=2024-03&page=0&size=5
+X-API-Key: {{apiKey}}
+
+###
+
+### Statistics without API key → 401
+GET {{baseUrl}}/statistics
+
+### ─── HEALTH ──────────────────────────────────────────────────────────────────
+
+### Health check (no auth required)
+GET http://localhost:8080/actuator/health
+
+###

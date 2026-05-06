@@ -1,0 +1,6 @@
+iban,date,amount,currency,category,description
+DE89370400440532013000,2024-03-15,100.50,EUR,groceries,Supermarket
+DE89370400440532013000,2024-03-16,-45.00,EUR,transport,Bus ticket
+GB29NWBK60161331926819,2024-03-10,200.00,GBP,transport,Train ticket
+DE89370400440532013000,2024-04-05,75.00,EUR,entertainment,Cinema
+GB29NWBK60161331926819,2024-04-12,-30.00,GBP,groceries,Corner shop

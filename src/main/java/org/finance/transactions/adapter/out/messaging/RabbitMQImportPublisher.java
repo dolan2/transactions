@@ -1,6 +1,7 @@
 package org.finance.transactions.adapter.out.messaging;
 
 import lombok.RequiredArgsConstructor;
+import org.finance.transactions.application.dto.ImportMessage;
 import org.finance.transactions.config.RabbitMQProperties;
 import org.finance.transactions.domain.port.out.ImportPublisher;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -15,6 +16,7 @@ public class RabbitMQImportPublisher implements ImportPublisher {
 
     @Override
     public void publish(String importId, String fileLocation) {
-        rabbitTemplate.convertAndSend(props.getExchange(), props.getRoutingKey(), new ImportMessage(importId, fileLocation));
+        rabbitTemplate.convertAndSend(props.getExchange(), props.getRoutingKey(),
+                new ImportMessage(importId, fileLocation));
     }
 }

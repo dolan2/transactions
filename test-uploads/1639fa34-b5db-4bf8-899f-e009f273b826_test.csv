@@ -1,0 +1,3 @@
+iban,date,amount,currency,category,description
+DE89370400440532013000,2024-03-15,100.50,EUR,groceries,Supermarket
+DE89370400440532013000,2024-03-16,-45.00,EUR,transport,Bus ticket
